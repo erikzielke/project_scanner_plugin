@@ -1,18 +1,14 @@
 package dk.erikzielke.idea.project_scanner;
 
-import com.intellij.ide.actions.CopyPathsAction;
 import com.intellij.ide.actions.RevealFileAction;
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
 import com.intellij.ui.*;
 import com.intellij.ui.components.JBList;
 import dk.erikzielke.idea.project_scanner.model.ScannedProject;
+import dk.erikzielke.idea.project_scanner.render.MyColoredListCellRenderer;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerResult;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerStateApplicationComponent;
 import org.jetbrains.annotations.Nullable;
@@ -53,33 +49,7 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
             }
         }
         SimpleTextAttributes simpleTextAttributes = new SimpleTextAttributes(Font.BOLD, JBColor.BLACK);
-        list.setCellRenderer(new ColoredListCellRenderer() {
-            @Override
-            protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
-                Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-                boolean open = false;
-                ScannedProject scannedProject = (ScannedProject) value;
-                for (Project openProject : openProjects) {
-                    if (scannedProject.getLocation().equals(openProject.getBasePath())) {
-                        open = true;
-                        break;
-                    }
-                }
-
-
-                String name = scannedProject.getName();
-                if (name == null) {
-                    name = scannedProject.getLocation();
-                }
-                if (open) {
-                    append(name, simpleTextAttributes);
-                } else {
-                    append(name);
-                }
-            }
-
-
-        });
+        list.setCellRenderer(new MyColoredListCellRenderer(simpleTextAttributes));
 
         setContent(ScrollPaneFactory.createScrollPane(list));
     }
@@ -130,4 +100,5 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
     public void refresh() {
         list.invalidate();
     }
+
 }

@@ -39,12 +39,19 @@
         <component>
             <implementation-class>dk.erikzielke.idea.project_scanner.settings.ProjectScannerStateApplicationComponent</implementation-class>
         </component>
+        <component>
+            <implementation-class>dk.erikzielke.idea.project_scanner.settings.ProjectScannerColorApplicationComponent</implementation-class>
+        </component>
 
 
     </application-components>
 
     <project-components>
         <!-- Add your project components here -->
+        <component>
+            <implementation-class>dk.erikzielke.idea.project_scanner.settings.tags.ProjectScannerProjectComponent
+            </implementation-class>
+        </component>
     </project-components>
 
     <actions>

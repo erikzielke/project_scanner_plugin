@@ -1,10 +1,15 @@
 package dk.erikzielke.idea.project_scanner;
 
+import com.intellij.openapi.util.JDOMUtil;
+import com.intellij.util.xmlb.XmlSerializer;
+import com.intellij.util.xmlb.XmlSerializerUtil;
 import dk.erikzielke.idea.project_scanner.model.ScannedProject;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerApplicationComponent;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerResult;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerSettings;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerStateApplicationComponent;
+import dk.erikzielke.idea.project_scanner.settings.tags.ProjectScannerTags;
+import org.jdom.JDOMException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,6 +56,17 @@ public class ScanJob {
                         }
 
                         scannedProject.setLocation(file.getAbsolutePath());
+                        File tagFile = new File(contentOfDir, "ProjectScannerTags.xml");
+                        if (tagFile.exists()) {
+                            ProjectScannerTags bean = new ProjectScannerTags();
+                            try {
+                                XmlSerializer.deserializeInto(bean, JDOMUtil.load(tagFile).getChildren().get(0));
+                                scannedProject.setTags(bean.getTags());
+                            } catch (JDOMException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         scannedProjectList.add(scannedProject);
 
 

@@ -1,10 +1,16 @@
 package dk.erikzielke.idea.project_scanner.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ScannedProject implements Serializable {
     private String name;
     private String location;
+    private ArrayList<String> tags;
+
+    public ScannedProject() {
+        tags = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
@@ -20,6 +26,14 @@ public class ScannedProject implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     @Override
