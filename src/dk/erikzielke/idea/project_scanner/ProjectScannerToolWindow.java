@@ -1,12 +1,15 @@
 package dk.erikzielke.idea.project_scanner;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.DataKey;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.ide.actions.CopyPathsAction;
+import com.intellij.ide.actions.RevealFileAction;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
 import com.intellij.ui.*;
 import com.intellij.ui.components.JBList;
 import dk.erikzielke.idea.project_scanner.model.ScannedProject;
@@ -16,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.io.File;
 
 public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
 
@@ -34,6 +37,13 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
 
         model = new DefaultListModel<>();
         list.setModel(model);
+
+        list.addMouseListener(new PopupHandler() {
+            @Override
+            public void invokePopup(Component comp, int x, int y) {
+                popupInvoked(comp, x, y);
+            }
+        });
         ProjectScannerStateApplicationComponent instance = ProjectScannerStateApplicationComponent.getInstance();
         ProjectScannerResult state = instance.getState();
         if (state != null) {
@@ -74,6 +84,19 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
         setContent(ScrollPaneFactory.createScrollPane(list));
     }
 
+    private void popupInvoked(final Component comp, final int x, final int y) {
+        final ScannedProject project = (ScannedProject) list.getSelectedValue();
+        if (project != null) {
+            final DefaultActionGroup group = new DefaultActionGroup();
+            group.add(new OpenProjectInNewWindow(list));
+            group.add(new RevealFileAction());
+            group.add(new CopyPathAction());
+            final ActionPopupMenu popupMenu = ActionManager.getInstance().createActionPopupMenu("projectScannerPopup", group);
+            popupMenu.getComponent().show(comp, x, y);
+        }
+    }
+
+
     @Nullable
     @Override
     public Object getData(String dataId) {
@@ -81,6 +104,14 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
             return model;
         } else if (SELECTED_PROJECT.is(dataId)) {
             return list.getSelectedValue();
+        } else if (CommonDataKeys.VIRTUAL_FILE.is(dataId)) {
+            ScannedProject selectedValue = (ScannedProject) list.getSelectedValue();
+            if (selectedValue != null) {
+                VirtualFile fileByIoFile = LocalFileSystem.getInstance().findFileByIoFile(new File(selectedValue.getLocation()));
+                return fileByIoFile;
+            } else {
+                return null;
+            }
         }
         return super.getData(dataId);
     }
@@ -89,9 +120,7 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
         final DefaultActionGroup group = new DefaultActionGroup();
         group.add(new ProjectScanAction());
         OpenProjectInNewWindow action = new OpenProjectInNewWindow(list);
-
         group.add(action);
-
         final ActionToolbar actionToolBar = ActionManager.getInstance().createActionToolbar("projectScannerToolbar", group, true);
         final JPanel buttonsPanel = new JPanel(new BorderLayout());
         buttonsPanel.add(actionToolBar.getComponent(), BorderLayout.CENTER);

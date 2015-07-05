@@ -24,9 +24,9 @@ public class ScannedProject implements Serializable {
 
     @Override
     public String toString() {
-        return "Project{" +
-                "name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                '}';
+        if (name != null) {
+            return name;
+        }
+        return location;
     }
 }
