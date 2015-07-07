@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>dk.erikzielke.idea.project_scanner</id>
     <name>Plugin display name here</name>
-    <version>1.0</version>
+    <version>0.1.0</version>
     <vendor email="erikzielke@hotmail.com" url="http://www.erikzielke.dk">Erik Zielke</vendor>
 
     <description><![CDATA[
