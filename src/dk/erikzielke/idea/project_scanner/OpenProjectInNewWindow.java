@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class OpenProjectInNewWindow extends AnAction {
     public OpenProjectInNewWindow(JComponent list) {
-        super("Open In New Window", "Opens the selected project in a new window", AllIcons.Icons.Ide.NextStep);
+        super("Open In New Window", "Opens the selected project in a new window", AllIcons.Actions.Menu_open);
         registerCustomShortcutSet(CommonShortcuts.ALT_ENTER, list);
     }
 

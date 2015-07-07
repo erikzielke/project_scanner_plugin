@@ -37,7 +37,6 @@ public class ProjectScannerProjectComponent implements ProjectComponent, Configu
     }
 
     public void disposeComponent() {
-        // TODO: insert component disposal logic here
     }
 
     @NotNull

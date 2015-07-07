@@ -17,7 +17,7 @@ import java.util.List;
 public class ProjectScanAction extends AnAction {
 
     public ProjectScanAction() {
-        super("Scan", "Scan for projects", AllIcons.ToolbarDecorator.AddFolder);
+        super("Scan", "Scan for projects", AllIcons.Actions.Refresh);
     }
 
     @Override
