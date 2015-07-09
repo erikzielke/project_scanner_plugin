@@ -49,19 +49,21 @@ public class MyColoredListCellRenderer extends ColoredListCellRenderer {
         Map<String, Color> colorMap = new TreeMap<>();
         ProjectScannerColorApplicationComponent instance = ProjectScannerColorApplicationComponent.getInstance();
         for (String tag : tags) {
-            ProjectScannerColors state = instance.getState();
-            JBColor color = JBColor.WHITE;
-            if (state != null && state.getColorMap().get(tag) != null) {
-                String tagColorString = state.getColorMap().get(tag);
-                int i = Integer.parseInt(tagColorString);
-                color = new JBColor(i, i);
-            } else {
-                double hue = Math.random();
-                int rgb = Color.HSBtoRGB((float) hue,0.5f,0.9f);
-                color = new JBColor(rgb, rgb);
-                state.getColorMap().put(tag, String.valueOf(rgb));
+            if (tag != null) {
+                ProjectScannerColors state = instance.getState();
+                JBColor color = JBColor.WHITE;
+                if (state != null && state.getColorMap().get(tag) != null) {
+                    String tagColorString = state.getColorMap().get(tag);
+                    int i = Integer.parseInt(tagColorString);
+                    color = new JBColor(i, i);
+                } else {
+                    double hue = Math.random();
+                    int rgb = Color.HSBtoRGB((float) hue, 0.5f, 0.9f);
+                    color = new JBColor(rgb, rgb);
+                    state.getColorMap().put(tag, String.valueOf(rgb));
+                }
+                colorMap.put(tag, color);
             }
-            colorMap.put(tag, color);
         }
         return colorMap;
     }

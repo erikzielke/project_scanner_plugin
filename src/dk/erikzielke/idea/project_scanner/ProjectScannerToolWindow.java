@@ -111,6 +111,7 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
             group.add(new OpenProjectInNewWindow(list));
             group.add(new RevealFileAction());
             group.add(new CopyPathAction());
+            group.add(new AddTagAction());
             final ActionPopupMenu popupMenu = ActionManager.getInstance().createActionPopupMenu("projectScannerPopup", group);
             popupMenu.getComponent().show(comp, x, y);
         }

@@ -121,4 +121,8 @@ public class ProjectScannerProjectComponent implements ProjectComponent, Configu
     public void disposeUIResources() {
         projectScannerTagsForm = null;
     }
+
+    public void setState(ProjectScannerTags state) {
+        tags = state;
+    }
 }

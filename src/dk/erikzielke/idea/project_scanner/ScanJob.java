@@ -7,6 +7,7 @@ import dk.erikzielke.idea.project_scanner.settings.ProjectScannerResult;
 import dk.erikzielke.idea.project_scanner.settings.ProjectScannerStateApplicationComponent;
 import dk.erikzielke.idea.project_scanner.settings.tags.ProjectScannerTags;
 import org.apache.commons.lang.SystemUtils;
+import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import java.io.*;
@@ -58,7 +59,7 @@ public class ScanJob {
                     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
                         Path fileName = dir.getFileName();
                         if (fileName.toString().equals(".idea")) {
-                            createScannedProject(dir.toAbsolutePath().toString(), scannedProjectList, dir.toFile());
+                            createScannedProject(dir.getParent().toAbsolutePath().toString(), scannedProjectList, dir.toFile());
                         }
 
                         return super.postVisitDirectory(dir, exc);
@@ -107,7 +108,10 @@ public class ScanJob {
         if (tagFile.exists()) {
             ProjectScannerTags bean = new ProjectScannerTags();
             try {
-                XmlSerializer.deserializeInto(bean, JDOMUtil.load(tagFile).getChildren().get(0));
+                List<Element> children = JDOMUtil.load(tagFile).getChildren();
+                if (children != null && !children.isEmpty()) {
+                    XmlSerializer.deserializeInto(bean, children.get(0));
+                }
                 scannedProject.setTags(bean.getTags());
             } catch (JDOMException | IOException e) {
                 e.printStackTrace();
