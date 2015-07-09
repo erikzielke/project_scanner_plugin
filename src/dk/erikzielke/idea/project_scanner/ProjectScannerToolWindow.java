@@ -174,9 +174,8 @@ public class ProjectScannerToolWindow extends SimpleToolWindowPanel {
 
                 @NotNull
                 @Override
-                protected String getText(@NotNull List<String> o) {
-                    String join = StringUtil.join(o, "|");
-                    return join;
+                protected String getText(@NotNull List<String> values) {
+                    return StringUtil.join(values, "|");
                 }
 
                 @Nullable
