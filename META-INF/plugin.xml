@@ -21,8 +21,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <toolWindow factoryClass="dk.erikzielke.idea.project_scanner.ProjectScannerToolWindowFactory" anchor="left"
-                    id="Project Scanner" icon="AllIcons.Toolwindows.ToolWindowFavorites"/>
+        <toolWindow factoryClass="dk.erikzielke.idea.project_scanner.ProjectScannerToolWindowFactory" anchor="left" id="Project Scanner" />
     </extensions>
 
 
